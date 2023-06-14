@@ -3,6 +3,7 @@ import { IonButton, IonCheckbox, IonCol, IonContent, IonGrid, IonHeader, IonItem
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
 import { fileApi } from '../api/file'
+import { uuid } from 'uuidv4';
 
 
 
@@ -66,12 +67,8 @@ const Home: React.FC = () => {
   }
   
   const onClickUploadButton = async () => {
-    
-    
-      
       const today=new Date();
       const createDate=today.toISOString();
-
       let updatedEmps: any[] = [];
       let count = 0;
       for (let i = 0; i < selectedEmp.length; i++) {
@@ -89,10 +86,7 @@ const Home: React.FC = () => {
         {
         setSelectedEmp(selectedEmp.filter((selectedEmp: any) => selectedEmp !== item))
         }
-        if (res.status) {
-
-          
-          
+        if (res.status) {        
           item.status = "Thành Công";
           updatedEmps = [
             ...updatedEmps.slice(0, count),
@@ -136,13 +130,12 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonToolbar>
-
         <form onSubmit={handleSubmit}>
           <IonItem>
-            <IonLabel>Select file</IonLabel>
+            <IonLabel>Chọn File</IonLabel>
             <input type="file" onChange={handleFileChange} />
           </IonItem>
-          <IonButton type="submit">Upload</IonButton>
+          <IonButton type="submit">Tải File</IonButton>
         </form>
       </IonToolbar>
       <IonContent>
