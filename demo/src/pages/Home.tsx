@@ -3,7 +3,7 @@ import { IonButton, IonCheckbox, IonCol, IonContent, IonGrid, IonHeader, IonItem
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
 import { fileApi } from '../api/file'
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 
 
@@ -148,12 +148,18 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonToolbar>
+        
         <form onSubmit={handleSubmit}>
-          <IonItem>
+          
+        <IonGrid>
+          <IonRow>
+            <IonCol size='4'> <IonItem>
             <IonLabel>Chọn File</IonLabel>
             <input type="file" onChange={handleFileChange} />
-          </IonItem>
-          <IonButton type="submit">Tải File</IonButton>
+          </IonItem></IonCol>
+            <IonCol size='1'><IonButton type="submit">Tải File</IonButton></IonCol>
+          </IonRow>
+        </IonGrid>
         </form>
       </IonToolbar>
       <IonContent>
@@ -209,7 +215,7 @@ const Home: React.FC = () => {
           </IonRow>
           { data.map((item: any) => {
             return (
-              <IonRow key={item.id}>
+              <IonRow key={v4()}>
                 <IonCol className='col'>
                   {item.EmpId || ""}
                 </IonCol>
