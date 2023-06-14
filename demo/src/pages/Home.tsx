@@ -10,6 +10,7 @@ import { uuid } from 'uuidv4';
 const Home: React.FC = () => {
   const { uploadFile, parseJson,uploadEmp } = fileApi();
   const [data, setData] = useState<any>([{}]);
+  const [emp,setEmp]= useState<any>([{}]);
   const [selectedEmp, setSelectedEmp] = useState<any>([{}]);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [presentAlert] = useIonAlert();
@@ -36,9 +37,23 @@ const Home: React.FC = () => {
   useEffect(()=>{
     setData([]);
     setSelectedEmp([]);
+    setEmp([]);
   },[])
+  
+  useEffect(()=>{
+    const flag:any[]=[];
+    data.map((item:any)=>{
+      if(item.status!=="Thành Công" || !item.status)
+      {
+        flag.push(item);
+      }
+    })
+    setEmp(flag);
+  },[data])
 
+    
 
+  
   const onClickUpload=async()=>{
     if (selectedEmp.length >0) {
     presentAlert({
@@ -87,6 +102,9 @@ const Home: React.FC = () => {
         setSelectedEmp(selectedEmp.filter((selectedEmp: any) => selectedEmp !== item))
         }
         if (res.status) {        
+          const flag = emp.filter((item:any) => item !== selectedEmp[i]);
+          setEmp(flag);
+            
           item.status = "Thành Công";
           updatedEmps = [
             ...updatedEmps.slice(0, count),
@@ -95,6 +113,7 @@ const Home: React.FC = () => {
             },
             ...updatedEmps.slice(count + 1)
           ];
+          
           count++;
         } else if (res.response.data.error.statusCode) {
           item.status = "Thất Bại";
@@ -114,7 +133,6 @@ const Home: React.FC = () => {
         const item = selectedEmp[index];
         return !updatedEmps.includes(item) && item.status !== "Thành Công";});
     setSelectedEmp(newEmps)   
-    
   }
 
   const handleChangeCheckbox = (item: any) => {
@@ -173,10 +191,10 @@ const Home: React.FC = () => {
             <IonCol className='col'>
               CheckAll
               <IonCheckbox
-                checked={ data.length === selectedEmp.length}
+                checked={ emp.length === selectedEmp.length}
                 onIonChange={e => {
                   if (e.detail.checked) {
-                    setSelectedEmp(data);
+                    setSelectedEmp(emp);
                   }
                   else {
                     setSelectedEmp([]);
